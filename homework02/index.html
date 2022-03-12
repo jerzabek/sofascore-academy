@@ -72,8 +72,50 @@
       transition: box-shadow linear 0.1s;
     }
 
+    /* ------ Logo ------ */
+    .logo {
+      font-size: 18px;
+      margin: 0 auto 20px;
+      padding: 1em 0em 1em 1em;
+      width: 3em;
+      height: 4em;
+      background-color: rgb(176, 236, 135);
+    }
+
+    .logo-block {
+      width: 1em;
+      height: 1em;
+      background-color: rgb(88, 4, 4);
+      position: relative;
+    }
+
+    .logo-block.logo-block-left-circle {
+      border-top-left-radius: 0.45em;
+      border-bottom-left-radius: 0.45em;
+    }
+
+    .logo-block:nth-child(odd) {
+      transform: translateX(100%);
+    }
+
+    .logo-block:first-child {
+      background-color: rgb(185, 33, 33);
+      border-top-right-radius: 0.45em;
+      border-top-left-radius: 0.45em;
+    }
+
+    .logo-block:last-child {
+      border-top-left-radius: 0.45em;
+      border-bottom-left-radius: 0.45em;
+      border-bottom-right-radius: 0.45em;
+    }
+
     /* ------ Form responsiveness ------ */
     @media (max-width: 900px) {
+      .logo {
+        font-size: 30px;
+      }
+
       .form .form-group .form-label {
         width: 100%;
         text-align: start;
@@ -94,6 +136,13 @@
 
 <body>
   <form action="index.html" method="POST" class="form">
+    <div class="logo" title="Logo">
+      <div class="logo-block"></div>
+      <div class="logo-block logo-block-left-circle"></div>
+      <div class="logo-block"></div>
+      <div class="logo-block"></div>
+    </div>
+
     <h1 class="title">HTML Form</h1>
 
     <div class="form-group">
