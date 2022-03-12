@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SofaScore HW01</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+    /* ------ Reset ------ */
+    *,
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      font-family: 'Open Sans', sans-serif;
+      height: 100%;
+    }
+
+    /* ------ Center on page ------ */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* ------ Form styling ------*/
+    .form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form .form-group .form-label {
+      width: 100px;
+      display: inline-block;
+      vertical-align: top;
+      padding-right: 20px;
+      text-align: end;
+    }
+
+    .form .form-group:hover .form-input {
+      box-shadow: 5px 5px 9px 6px #00000024;
+      transition: box-shadow linear 0.1s;
+    }
+
+    .form .form-group .form-input {
+      width: 300px;
+      max-width: 300px;
+
+      padding: 4px;
+      border-radius: 4px;
+      border-width: 1px;
+      outline-color: #4e4eda57;
+      box-sizing: border-box;
+
+      box-shadow: none;
+      transition: box-shadow linear 0.1s;
+    }
+
+    /* ------ Form responsiveness ------ */
+    @media (max-width: 900px) {
+      .form .form-group .form-label {
+        width: 100%;
+        text-align: start;
+      }
+
+      .form {
+        width: 100%;
+        padding: 0 50px;
+      }
+
+      .form .form-group .form-input {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <form action="index.html" method="POST" class="form">
+    <h1 class="title">HTML Form</h1>
+
+    <div class="form-group">
+      <label class="form-label" for="email">Email</label>
+      <input class="form-input" type="email" name="email" placeholder="johndoe@example.com">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Password</label>
+      <input class="form-input" type="password" name="password" placeholder="**********">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="text">Some text</label>
+      <textarea class="form-input" name="text" cols="30" rows="10">Enter a sentence...</textarea>
+    </div>
+  </form>
+</body>
+
+</html>
