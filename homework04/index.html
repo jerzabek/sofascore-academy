@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PokeAPI SofaScore HW04</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main>
+    <div class="container py-2">
+      <h1 class="mb-0">Browse pokémon!</h1>
+      <p class="text-muted small">HINT: Click on the images to expand them and see more info about the pokémon!</p>
+      <hr>
+
+      <template id="pokemon-card">
+        <div class="card pointer mb-2" title="Click me!" data-bs-toggle="collapse" data-bs-target="#temp" aria-expanded="false" aria-controls="temp">
+          <div class="row">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2">
+              <img src="https://via.placeholder.com/500x500.png?text=image+not+available+:/" class="img-fluid poke-icon w-100" alt="temp">
+            </div>
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10">
+              <div class="d-flex justify-content-between p-2">
+                <h1 class="pokemon-name"></h1>
+                <div>
+                  <button class="btn btn-outline-danger pokemon-hide">Hide</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="collapse multi-collapse" id="bulbasaur">
+            <div class="card-body"></div>
+          </div>
+        </div>
+      </template>
+
+      <div class="d-flex align-items-baseline">
+        <button class="btn btn-outline-info btn-sm me-2" id="unhideAll">Show all</button>
+        <button class="btn btn-primary me-2 disabled" id="prevPage">Previous page</button>
+        <button class="btn btn-primary me-3" id="nextPage">Next page</button>
+
+        <p class="small" id="pokemon-count"></p>
+      </div>
+
+      <div id="pokemon-container">
+
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
