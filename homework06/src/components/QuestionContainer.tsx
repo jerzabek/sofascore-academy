@@ -18,7 +18,7 @@ function QuestionContainer() {
 
   return (
     <div>
-      <h1>Num of questions: {questionsContext.length}</h1>
+      <p>Num of questions: {questionsContext.length}</p>
       <QuestionComponent question={questionsContext[currentQuestion]} />
       <button onClick={previousQuestion}>Previous</button>
       <button onClick={nextQuestion}>Next</button>

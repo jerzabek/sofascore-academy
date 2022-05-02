@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { QuestionPropTypes } from '../model/Question'
 
 // OpenTDB Returns questins with HTML Entities, we use this function to decode them
@@ -7,20 +8,51 @@ function decodeHtml(html: string) {
   return txt.value;
 }
 
+const QuestionTitle = styled.p`
+  margin-bottom: 0.5em;
+`
+
+const QuestionDetails = styled.p`
+  opacity: 0.6;
+  margin-bottom: 2em;
+`
+
+const AnswerContainer = styled.div`
+  display: flex;
+  
+  @media (max-width: 900px) {
+    flex-wrap: wrap;
+  }
+`
+
+const AnswerOption = styled.div`
+  flex: 1;
+  flex-basis: 100%;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+  
+  @media (max-width: 900px) {
+    margin-bottom: 1em;
+  }
+`
+
 function Question({ question }: QuestionPropTypes) {
   // We sort the array to make sure the order of the answers stays consistent but so that the correct answer isn't always the last
   const answers = [...question.incorrect_answers, question.correct_answer].sort()
 
   return (
     <div>
-      <h1>{decodeHtml(question.question)}</h1>
-      <p>{question.difficulty} - {question.category} - {question.type}</p>
+      <QuestionTitle>{decodeHtml(question.question)}</QuestionTitle>
+      <QuestionDetails>Category: {question.category}<br />Difficulty: {question.difficulty}</QuestionDetails>
 
-      <ul>
+      <AnswerContainer>
         {answers.map((value, index) =>
-          <li key={index}>{value}</li>
+          <AnswerOption key={index}>{value}</AnswerOption>
         )}
-      </ul>
+      </AnswerContainer>
     </div>
   )
 }
