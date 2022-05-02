@@ -1,6 +1,10 @@
 import { useContext, useState } from 'react';
-import QuestionContext from '../context/QuestionContext';
+import styled from 'styled-components';
+import QuestionContext from '../../context/QuestionContext';
 import QuestionComponent from './Question'
+
+const PaginationButton = styled.button`
+`
 
 function QuestionContainer() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -18,10 +22,10 @@ function QuestionContainer() {
 
   return (
     <div>
-      <p>Num of questions: {questionsContext.length}</p>
+      <PaginationButton onClick={previousQuestion}>Previous</PaginationButton>
+      <PaginationButton onClick={nextQuestion}>Next</PaginationButton>
+
       <QuestionComponent question={questionsContext[currentQuestion]} />
-      <button onClick={previousQuestion}>Previous</button>
-      <button onClick={nextQuestion}>Next</button>
     </div>
   )
 }

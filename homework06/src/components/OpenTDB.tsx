@@ -2,8 +2,15 @@ import useSWR from 'swr'
 import { OPENTDB_URL } from '../API'
 import { QuestionsResponse } from '../model/Question'
 import QuestionContext from '../context/QuestionContext'
-import QuestionContainer from './QuestionContainer'
+import QuestionContainer from './questions/QuestionContainer'
 import styled from 'styled-components'
+import './opentdb.css'
+import { ResponsiveResolutions } from '../Responsive'
+
+const Background = styled.main`
+  height 100%;
+  overflow: auto;
+`
 
 const CenteredContainer = styled.div`
   width: 100%;
@@ -18,21 +25,18 @@ const Container = styled.div`
   max-width: 1200px;
   padding: 3em 1.5em;
 
-  @media (max-width: 1200px) {
+  @media ${ResponsiveResolutions.lg} {
     max-width: 900px;
   }
   
-  @media (max-width: 900px) {
+  @media ${ResponsiveResolutions.md} {
     max-width: 100%;
   }
 `
 
-const Divider = styled.hr`
-  margin: 1em 0;
-`
-
 function OpenTDB() {
   // Loading the questions
+  // We "missuse" SWR by setting all default settings to ensure we only load the questions once at mount
   const { data, error } = useSWR<QuestionsResponse>(OPENTDB_URL, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -42,21 +46,31 @@ function OpenTDB() {
   })
 
   if (!data && !error) {
-    return (<CenteredContainer>Loading...</CenteredContainer>)
+    return (
+      <Background className={'background-pattern'}>
+        <CenteredContainer>Loading...</CenteredContainer>
+      </Background>
+    )
   }
 
   if (!data) { // if (error)
-    return (<CenteredContainer>An error has occurred...</CenteredContainer>)
+    return (
+      <Background className={'background-pattern'}>
+        <CenteredContainer>An error has occurred...</CenteredContainer>
+      </Background>
+    )
   }
 
   return (
     <QuestionContext.Provider value={data.results}>
-      <Container>
-        <h1>Welcome to SofaTrivia!</h1>
-        <p>Best trivia application in town.</p>
-        <Divider />
-        <QuestionContainer />
-      </Container>
+      <Background className={'background-pattern'}>
+        <Container>
+          <h1>Welcome to SofaTrivia!</h1>
+          <p style={{ marginBottom: '1em' }}>Best trivia application in town.</p>
+
+          <QuestionContainer />
+        </Container>
+      </Background>
     </QuestionContext.Provider>
   )
 }
