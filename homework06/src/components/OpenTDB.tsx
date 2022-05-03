@@ -1,26 +1,18 @@
-import useSWR from 'swr'
-import { OPENTDB_URL } from '../API'
-import { QuestionsResponse } from '../model/Question'
-import QuestionContext from '../context/QuestionContext'
-import QuestionContainer from './questions/QuestionContainer'
 import styled from 'styled-components'
 import './opentdb.css'
 import { ResponsiveResolutions } from '../Responsive'
+import MusicController from './MusicController'
+import { CenteredContainer } from '../styledComponents/Container'
+import Game from './Game'
+import { useState } from 'react'
+import { CustomButton } from './questions/Answer'
 
-const Background = styled.main`
+export const Background = styled.main`
   height 100%;
   overflow: auto;
 `
 
-const CenteredContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Container = styled.div`
+export const Container = styled.div`
   margin: 0 auto;
   max-width: 1200px;
   padding: 3em 1.5em;
@@ -34,44 +26,85 @@ const Container = styled.div`
   }
 `
 
-function OpenTDB() {
-  // Loading the questions
-  // We "missuse" SWR by setting all default settings to ensure we only load the questions once at mount
-  const { data, error } = useSWR<QuestionsResponse>(OPENTDB_URL, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    refreshWhenOffline: false,
-    refreshWhenHidden: false,
-    refreshInterval: 0
-  })
+const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  @media ${ResponsiveResolutions.md} {
+    flex-direction: column;
+  }
+`
 
-  if (!data && !error) {
-    return (
-      <Background className={'background-pattern'}>
-        <CenteredContainer>Loading...</CenteredContainer>
-      </Background>
-    )
+const TitleContainer = styled(CenteredContainer)`
+  background-image: url('/images/title.gif');
+  background-position: center;
+  background-size: contain;
+
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+`
+
+const AppTitle = styled.h1`
+  font-family: 'Neucha', cursive;
+  font-size: 7em;
+  text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff;
+  
+  @media ${ResponsiveResolutions.md} {
+    font-size: 4em;
+  }
+`
+
+function OpenTDB() {
+  const [readyToPlay, setReadyToPlay] = useState(false)
+
+  function handleReadyButtonClick() {
+    const audio = new Audio(require('../resources/sfx/click.mp3'))
+
+    let playPromise = audio.play()
+
+    if (playPromise !== undefined) {
+      playPromise.then().catch((e) => { console.log('err in play', e) })
+    }
+
+    setReadyToPlay(true)
   }
 
-  if (!data) { // if (error)
+  if (readyToPlay) {
     return (
       <Background className={'background-pattern'}>
-        <CenteredContainer>An error has occurred...</CenteredContainer>
+        <Container>
+          <Game />
+        </Container>
       </Background>
     )
   }
 
   return (
-    <QuestionContext.Provider value={data.results}>
-      <Background className={'background-pattern'}>
-        <Container>
-          <h1>Welcome to SofaTrivia!</h1>
-          <p style={{ marginBottom: '1em' }}>Best trivia application in town.</p>
+    <Background className={'background-pattern'}>
+      <Container>
+        <FlexContainer style={{ alignItems: 'end' }}>
+          <p style={{ marginBottom: '1em' }}>You can Play music by pressing the volume button on the right!</p>
 
-          <QuestionContainer />
-        </Container>
-      </Background>
-    </QuestionContext.Provider>
+          <MusicController sound={require('../resources/sfx/menu.mp3')} />
+        </FlexContainer>
+
+        <TitleContainer>
+          <AppTitle>TriviaScore</AppTitle>
+          <CustomButton
+            backgroundColor='#DB3A34'
+            foregroundColor='#FFFFFA'
+            onClick={handleReadyButtonClick}>Play now!</CustomButton>
+        </TitleContainer>
+      </Container>
+    </Background>
   )
 }
 

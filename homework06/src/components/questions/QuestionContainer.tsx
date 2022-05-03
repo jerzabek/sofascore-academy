@@ -1,9 +1,14 @@
-import { useContext, useState } from 'react';
-import styled from 'styled-components';
-import QuestionContext from '../../context/QuestionContext';
+import { useContext, useState } from 'react'
+import styled from 'styled-components'
+import QuestionContext from '../../context/QuestionContext'
+import { CenteredContainer } from '../../styledComponents/Container'
 import QuestionComponent from './Question'
 
-const PaginationButton = styled.button`
+const FixedCenteredContainer = styled(CenteredContainer)`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `
 
 function QuestionContainer() {
@@ -11,21 +16,33 @@ function QuestionContainer() {
 
   const questionsContext = useContext(QuestionContext);
 
-  // We use Math.max & min function to make sure index (currentQuestion) stays within array bounds (questionContext.length)
-  function previousQuestion() {
-    setCurrentQuestion(curr => Math.max(0, curr - 1))
+  function nextQuestion() {
+    if (currentQuestion === questionsContext.length - 1) {
+      // User answered all questions - victory
+      alert('you win')
+      return;
+    }
+
+    setCurrentQuestion(curr => Math.min(questionsContext.length - 1, curr + 1))
   }
 
-  function nextQuestion() {
-    setCurrentQuestion(curr => Math.min(questionsContext.length, curr + 1))
+  function failure() {
+    // alert('game over')
   }
 
   return (
     <div>
-      <PaginationButton onClick={previousQuestion}>Previous</PaginationButton>
-      <PaginationButton onClick={nextQuestion}>Next</PaginationButton>
-
-      <QuestionComponent question={questionsContext[currentQuestion]} />
+      <p>Current question: {currentQuestion + 1}/{questionsContext.length}</p>
+      <QuestionComponent
+        correctGuess={nextQuestion}
+        wrongGuess={failure}
+        question={questionsContext[currentQuestion]} />
+      {
+        false && (
+          <FixedCenteredContainer>
+          </FixedCenteredContainer>
+        )
+      }
     </div>
   )
 }

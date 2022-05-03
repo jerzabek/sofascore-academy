@@ -14,5 +14,7 @@ export interface QuestionsResponse {
 }
 
 export interface QuestionPropTypes {
-  question: Question
+  question: Question,
+  correctGuess: Function
+  wrongGuess: Function
 }

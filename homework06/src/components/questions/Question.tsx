@@ -1,3 +1,4 @@
+import { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { QuestionPropTypes } from '../../model/Question'
 import { ResponsiveResolutions } from '../../Responsive';
@@ -29,11 +30,39 @@ const AnswerContainer = styled.div`
   }
 `
 
-function Question({ question }: QuestionPropTypes) {
-  // We sort the array to make sure the order of the answers stays consistent but so that the correct answer isn't always the last
-  const answers = [...question.incorrect_answers, question.correct_answer].sort()
+function Question({ question, correctGuess, wrongGuess }: QuestionPropTypes) {
+  const [elems, setElemes] = useState<ReactElement[]>()
 
-  let colors = [...answerColors]
+  function userAnswered(answer: string) {
+    if (answer === question.correct_answer) {
+      correctGuess()
+    } else {
+      wrongGuess()
+    }
+  }
+
+  useEffect(() => {
+    // We sort the array to make sure the order of the answers stays consistent but so that the correct answer isn't always the last
+    const answers = [...question.incorrect_answers, question.correct_answer].sort()
+    let colors = [...answerColors]
+
+    setElemes(answers.map((answerText, index) => {
+      // This is so we don't use the same color on multiple answers
+      // We pick a random index from the array, remove it and extract the background and foreground colors from it
+      let colorIndex = Math.floor(Math.random() * colors.length)
+      let color = colors.splice(colorIndex, 1)[0] || answerColors[0];
+
+      return (
+        <Answer key={index}
+          onClick={() => userAnswered(answerText)}
+          backgroundColor={color.background}
+          foregroundColor={color.foreground}
+          text={decodeURIComponent(answerText)} />
+      )
+    }))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question])
 
   // OpenTDB Returns questins encoded in URL encoding (RFC 3986) so we use decodeURIComponent() function to reverse that
   return (
@@ -42,16 +71,7 @@ function Question({ question }: QuestionPropTypes) {
       <QuestionTitle>{decodeURIComponent(question.question)}</QuestionTitle>
 
       <AnswerContainer>
-        {answers.map((answerText, index) => {
-          // This is so we don't use the same color on multiple answers
-          // We pick a random index from the array, remove it and extract the background and foreground colors from it
-          let colorIndex = Math.floor(Math.random() * colors.length)
-          let color = colors.splice(colorIndex, 1)[0] || answerColors[0];
-
-          return (
-            <Answer key={index} backgroundColor={color.background} foregroundColor={color.foreground} text={decodeURIComponent(answerText)} />
-          )
-        })}
+        {elems}
       </AnswerContainer>
     </div>
   )
