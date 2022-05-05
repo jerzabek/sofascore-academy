@@ -57,6 +57,26 @@ const AppTitle = styled.h1`
   font-size: 7em;
   text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff;
   
+  animation: float 5s linear infinite;
+
+  @keyframes float {
+    0% {
+      transform: translatey(0px) rotate(3deg);
+    }
+    25% {
+      transform: translatey(-12.5px) rotate(4deg);
+    }
+    50% {
+      transform: translatey(-25px) rotate(3deg);
+    }
+    75% {
+      transform: translatey(-12.5px) rotate(-4deg);
+    }
+    100% {
+      transform: translatey(0px) rotate(3deg);
+    }
+  }
+
   @media ${ResponsiveResolutions.md} {
     font-size: 4em;
   }
