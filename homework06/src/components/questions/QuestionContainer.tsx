@@ -5,7 +5,11 @@ import { CenteredContainer } from '../../styledComponents/Container'
 import { CustomButton } from './Answer'
 import QuestionComponent from './Question'
 
-const Modal = styled(CenteredContainer)`
+interface ModalProps {
+  backgroundUrl: string
+}
+
+const Modal = styled(CenteredContainer)<ModalProps>`
   position: fixed;
   left: 50%;
   top: 50%;
@@ -17,7 +21,7 @@ const Modal = styled(CenteredContainer)`
   max-width: 50%;
   max-height: 300px;
 
-  background-image: url('/images/lost.gif');
+  background-image: url('${props => props.backgroundUrl}');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -36,16 +40,21 @@ const ModalButtonContainer = styled.div`
   max-width: 200px;
 `
 
+interface ModalData {
+  text: string,
+  backgroundUrl: string
+}
+
 function QuestionContainer() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [modal, setModal] = useState<string>()
+  const [modal, setModal] = useState<ModalData>()
 
   const questionsContext = useContext(QuestionContext);
 
   function nextQuestion() {
     if (currentQuestion === questionsContext.length - 1) {
       // User answered all questions - victory
-      alert('you win')
+      setModal({ text: "Victory! Congratulations.", backgroundUrl: '/images/success.webp'})
       return;
     }
 
@@ -53,7 +62,7 @@ function QuestionContainer() {
   }
 
   function failure() {
-    setModal("You've failed! Game over.")
+    setModal({ text: "You've failed! Game over.", backgroundUrl: '/images/lost.gif'})
   }
 
   return (
@@ -71,8 +80,8 @@ function QuestionContainer() {
         question={questionsContext[currentQuestion]} />
       {
         modal && (
-          <Modal>
-            <ModalTitle>{modal}</ModalTitle>
+          <Modal backgroundUrl={modal.backgroundUrl}>
+            <ModalTitle>{modal.text}</ModalTitle>
 
             <ModalButtonContainer>
               <CustomButton
