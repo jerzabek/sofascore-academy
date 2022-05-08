@@ -5,7 +5,7 @@ import MusicController from './MusicController'
 import { CenteredContainer } from '../styledComponents/Container'
 import Game from './Game'
 import { useState } from 'react'
-import { CustomButton } from './questions/Answer'
+import Button from './Button'
 
 export const Background = styled.main`
   height 100%;
@@ -86,14 +86,6 @@ function OpenTDB() {
   const [readyToPlay, setReadyToPlay] = useState(false)
 
   function handleReadyButtonClick() {
-    const audio = new Audio(require('../resources/sfx/click.mp3'))
-
-    let playPromise = audio.play()
-
-    if (playPromise !== undefined) {
-      playPromise.then().catch((e) => { console.log('err in play', e) })
-    }
-
     setReadyToPlay(true)
   }
 
@@ -118,10 +110,11 @@ function OpenTDB() {
 
         <TitleContainer>
           <AppTitle>TriviaScore</AppTitle>
-          <CustomButton
+          <Button
+            text='Play now!'
             backgroundColor='#DB3A34'
             foregroundColor='#FFFFFA'
-            onClick={handleReadyButtonClick}>Play now!</CustomButton>
+            handleClick={handleReadyButtonClick} />
         </TitleContainer>
       </Container>
     </Background>

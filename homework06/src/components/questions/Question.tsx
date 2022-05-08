@@ -31,7 +31,7 @@ const AnswerContainer = styled.div`
 `
 
 function Question({ question, correctGuess, wrongGuess }: QuestionPropTypes) {
-  const [elems, setElemes] = useState<ReactElement[]>()
+  const [elems, setElemes] = useState<ReactElement[]>([])
 
   function userAnswered(answer: string) {
     if (answer === question.correct_answer) {
@@ -41,6 +41,8 @@ function Question({ question, correctGuess, wrongGuess }: QuestionPropTypes) {
     }
   }
 
+  // This effect triggers only once the actual question changes. It also defines the colors of the answers that will remain the same
+  // for the duration of this question
   useEffect(() => {
     // We sort the array to make sure the order of the answers stays consistent but so that the correct answer isn't always the last
     const answers = [...question.incorrect_answers, question.correct_answer].sort()
@@ -57,12 +59,19 @@ function Question({ question, correctGuess, wrongGuess }: QuestionPropTypes) {
           onClick={() => userAnswered(answerText)}
           backgroundColor={color.background}
           foregroundColor={color.foreground}
-          text={decodeURIComponent(answerText)} />
+          text={answerText} />
       )
     }))
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question])
+  }, [question.question])
+
+  // Whenever the answers to the question change (e.g. user used 50/50 cheat) we remove irrelevant answers
+  useEffect(() => {
+    // We sort the array to make sure the order of the answers stays consistent but so that the correct answer isn't always the last
+    const answers = [...question.incorrect_answers, question.correct_answer].sort()
+
+    setElemes(elems => elems.filter(answerElement => answers.includes(answerElement.props.text)))
+  }, [question.incorrect_answers, question.correct_answer])
 
   // OpenTDB Returns questins encoded in URL encoding (RFC 3986) so we use decodeURIComponent() function to reverse that
   return (
