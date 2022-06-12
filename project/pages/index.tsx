@@ -1,17 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
-import { SWRConfig } from 'swr'
-import swrConfig from '../api/API'
-import Categories from '../modules/Categories'
-
-function CategoryContainer() {
-  return (
-    <SWRConfig value={swrConfig}>
-      <Categories />
-    </SWRConfig>
-  )
-}
+import { Container } from '../components/Common'
+import Categories from '../modules/category/Categories'
+import NavBar from '../modules/common/NavBar'
 
 const Home: NextPage = () => {
   return (
@@ -20,16 +11,14 @@ const Home: NextPage = () => {
         <title>Home | SofaSkoro</title>
       </Head>
 
-      <nav>
-        <Link href="/">Home</Link>
-      </nav>
+      <NavBar />
 
-      <div>
+      <Container>
         <h1>Welcome to SofaSkoro</h1>
-        <p>Available categories for Football:</p>
+        <h3><i>Visit SofaSkoro for the most exciting and up-to-date sports statistics</i></h3>
 
-        <CategoryContainer />
-      </div>
+        <Categories />
+      </Container>
     </>
   )
 }

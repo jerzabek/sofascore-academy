@@ -1,10 +1,10 @@
 import { Sport } from "./Sport"
 
-export interface Categories {
+export type Categories = {
   categories: CategoryInfo[]
 }
 
-export interface Category {
+export type Category = {
   alpha2: string
   flag: string
   id: number
@@ -14,7 +14,7 @@ export interface Category {
   sport: Sport
 }
 
-export interface CategoryInfo {
+export type CategoryInfo = {
   category: Category
   totalEventPlayerStatistics: number
   totalEvents: number

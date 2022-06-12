@@ -1,12 +1,14 @@
 import { Fetcher, SWRConfiguration } from "swr"
 
+// TODO: prebaci se na axios, defaultno baca error na 400 i 500
+export const swrFetcher = (args: string) => fetch(args).then(response => {
+  if (response.status >= 400 && response.status < 600) {
+    return response.json().then(json => { throw json })
+  }
 
-const swrFetcher: Fetcher<string, string> = (args) => fetch(args).then(response => response.json())
+  return response.json()
+})
 
-const swrConfig:SWRConfiguration = { fetcher: swrFetcher }
+const swrConfig: SWRConfiguration = { fetcher: swrFetcher }
 
 export default swrConfig;
-
-export function getFootballCategories() {
-
-}
