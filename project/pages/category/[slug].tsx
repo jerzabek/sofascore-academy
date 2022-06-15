@@ -1,24 +1,23 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { swrFetcher } from "../../api/API";
 import { API_BASE_URL } from "../../api/Constants";
 import { Container } from "../../components/Common";
-import { Error } from "../../model/Error";
 import { EventInfo } from "../../model/Event";
 import NavBar from "../../modules/common/NavBar";
 import getFormattedDate from "../../util/FormattedDate";
+import { TournamentData } from "../../modules/category/TournamentPreview";
+import TournamentPreview from '../../modules/category/TournamentPreview'
+import Footer from "../../modules/common/Footer";
 
 interface CategoryPageProps {
-  events?: EventInfo[]
+  events?: TournamentData[]
   error?: Error
 }
 
 const CategoryPage: NextPage<CategoryPageProps> = ({ events, error }) => {
-  const router = useRouter()
-  const { slug } = router.query
-
   if (error) {
     return (
       <p>An error occurred. :/ <b>{error.message}</b></p>
@@ -41,26 +40,45 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ events, error }) => {
 
       <Container>
         {
-          events.map((event) => (
-            <Event key={event.id} event={event} />
+          events.map((tournament) => (
+            <React.Fragment key={tournament.id}>
+              <TournamentPreview tournament={tournament} />
+            </React.Fragment>
           ))
         }
       </Container>
+
+      <Footer />
     </>
   )
 }
 
-interface EventProps {
-  event: EventInfo
-}
+function parseEvents(events: EventInfo[]) {
+  const tempTournaments: TournamentData[] = [];
+  const ids: number[] = [];
 
-function Event({ event }: EventProps) {
-  return (
-    <>
-      <p>{event.tournament.name} - {event.homeTeam.name} vs {event.awayTeam.name} ({event.homeScore.display}:{event.awayScore.display})</p>
-      <Link href={`/event/${event.id}`}>Link na event</Link>
-    </>
-  )
+  // Extract all unique tournaments (NOT UniqueTournaments but tournaments that are unique) from event list
+  events.forEach(event => {
+    if (ids.includes(event.tournament.id)) {
+      return
+    }
+
+    ids.push(event.tournament.id)
+    tempTournaments.push({
+      id: event.tournament.id,
+      tournament: event.tournament,
+      events: []
+    })
+  })
+
+  // Categorizes events based on tournaments
+  tempTournaments.forEach(tournament => {
+    // We use Number wrapper to keep typescript happy - Object.keys returns string[]
+    // We know the id is always a number
+    tournament.events = events.filter(event => event.tournament.id === tournament.id)
+  })
+
+  return tempTournaments
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -74,7 +92,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
-        events
+        events: parseEvents(events)
       }
     }
   } catch ({ error }) {

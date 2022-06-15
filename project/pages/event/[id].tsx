@@ -9,6 +9,7 @@ import { Container } from "../../components/Common";
 import { EventElement, EventTournament } from "../../components/Event";
 import { Error } from "../../model/Error";
 import { EventInfo } from "../../model/Event";
+import Footer from "../../modules/common/Footer";
 import NavBar from "../../modules/common/NavBar";
 
 interface EventPageProps {
@@ -60,15 +61,17 @@ const EventPage: NextPage<EventPageProps> = ({ event, error }) => {
           <p></p>
         </EventElement>
         <h1>{score}{' '}{
-            event.status.type === 'inprogress' && (
-              <LiveIndicator>LIVE!</LiveIndicator>
-            )
-          }</h1>
+          event.status.type === 'inprogress' && (
+            <LiveIndicator>LIVE!</LiveIndicator>
+          )
+        }</h1>
         <p><Subtitle>Home team:</Subtitle> {event.homeTeam.name}</p>
         <p><Subtitle>Away team:</Subtitle> {event.awayTeam.name}</p>
         <EventTournament>{event.tournament.name}</EventTournament>
 
       </Container>
+
+      <Footer />
     </>
   )
 }

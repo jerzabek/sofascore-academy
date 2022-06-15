@@ -108,8 +108,6 @@ function EventPreview({ event }: EventPreviewProps) {
       return
     }
 
-    console.log(event)
-
     setScore(`(${event.homeScore.display}:${event.awayScore.display})`)
   }, [event])
 

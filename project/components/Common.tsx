@@ -51,3 +51,12 @@ export const NavBarElement = styled.nav`
     text-decoration: none;
   }
 `
+
+export const FooterElement = styled.footer`
+  margin-top: 50px;
+  min-height: 50px;
+  background-color: ${PRIMARY};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

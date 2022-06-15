@@ -23,9 +23,9 @@ export const CategoryEventPreviewTournament = styled.div`
 `
 
 export const CategoryEventPreviewElement = styled.div`
-  padding: 10px 0;
-  margin: 5px 0;
+  padding: 10px;
   cursor: pointer;
+  border-bottom: 1px solid #00000025;
 
   &:hover {
     background-color: #00000010;
@@ -33,7 +33,10 @@ export const CategoryEventPreviewElement = styled.div`
 `
 
 export const CategoryEventsContainer = styled.div`
-  padding: 0 30px;
+  margin: 0 15px;
+  padding: 0 5px;
+  border-left: 1px solid #00000044;
+
   max-height: 0;
   transition: max-height 1s cubic-bezier(0, 1, 0, 1);
   overflow: hidden;

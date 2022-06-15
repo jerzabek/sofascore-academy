@@ -24,6 +24,7 @@ export type EventInfo = {
   homeScore: TeamScore
   awayScore: TeamScore
   uniqueTournament?: UniqueTournament
+  startTimestamp: number
 }
 
 export type Tournament = {
